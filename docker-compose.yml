@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin234
+      POSTGRES_DB: asset_management
+    ports:
+      - "5429:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    restart: always
+
+  backend:
+    build:
+      context: ./Backend
+    container_name: backend01
+    ports:
+      - "5000:5000"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin234
+      POSTGRES_DB: asset_management
+      POSTGRES_HOST: postgres
+    depends_on:
+      - postgres
+    restart: always
+
+  employee-assets:
+    build:
+      context: ./Employee-Assets
+    container_name: employee-assets
+    ports:
+      - "6781:80"
+    depends_on:
+      - backend
+    restart: always
+
+  hr-assets:
+    build:
+      context: ./HR-Assets
+    container_name: hr-assets
+    ports:
+      - "6782:80"
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  db_data:
+
