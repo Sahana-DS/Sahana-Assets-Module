@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: admin234
       POSTGRES_DB: asset_management
     ports:
-      - "5429:5432"
+      - "5202:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     restart: always
@@ -19,7 +19,7 @@ services:
       context: ./Backend
     container_name: backend01
     ports:
-      - "5000:5000"
+      - "3202:3202"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin234
@@ -34,7 +34,7 @@ services:
       context: ./Employee-Assets
     container_name: employee-assets
     ports:
-      - "6781:80"
+      - "8004:80"
     depends_on:
       - backend
     restart: always
@@ -44,7 +44,7 @@ services:
       context: ./HR-Assets
     container_name: hr-assets
     ports:
-      - "6782:80"
+      - "8005:80"
     depends_on:
       - backend
     restart: always
